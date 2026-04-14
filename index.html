@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>科技视界 | 未来交互界面</title>
+    <!-- 引入 Google Fonts 提升字体科技感 -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700;14..32,800&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+    <!-- Font Awesome 6 (免费图标库) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #050b1a;
+            font-family: 'Inter', 'Space Grotesk', sans-serif;
+            color: #eef5ff;
+            overflow-x: hidden;
+            line-height: 1.5;
+        }
+
+        /* 科技感动态网格背景 + 粒子光晕 */
+        .tech-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            background: radial-gradient(circle at 20% 30%, #0a0f2a, #020617);
+        }
+
+        .tech-bg::before {
+            content: "";
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(0, 255, 255, 0.08) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 255, 0.08) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+        }
+
+        /* 动态流光线条 */
+        .glow-line {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .glow-line span {
+            position: absolute;
+            display: block;
+            background: linear-gradient(90deg, transparent, rgba(0, 255, 255, 0.4), transparent);
+            width: 100%;
+            height: 2px;
+            animation: moveLine 8s linear infinite;
+            opacity: 0.6;
+        }
+
+        @keyframes moveLine {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .glow-line span:nth-child(1) { top: 15%; animation-delay: 0s; width: 70%; left: 10%;}
+        .glow-line span:nth-child(2) { top: 45%; animation-delay: 2s; width: 50%; left: 20%; background: linear-gradient(90deg, transparent, rgba(100, 0, 255, 0.5), transparent);}
+        .glow-line span:nth-child(3) { top: 70%; animation-delay: 4s; width: 80%; left: 5%;}
+        .glow-line span:nth-child(4) { top: 88%; animation-delay: 1s; width: 60%; left: 25%; background: linear-gradient(90deg, transparent, rgba(0, 200, 255, 0.6), transparent);}
+
+        /* 主容器 */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem 2rem 4rem;
+            position: relative;
+            backdrop-filter: blur(2px);
+        }
+
+        /* 头部导航区域 (科技感玻璃) */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            padding: 1rem 1.5rem;
+            background: rgba(10, 20, 40, 0.55);
+            backdrop-filter: blur(12px);
+            border-radius: 2rem;
+            border: 1px solid rgba(0, 255, 255, 0.25);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3), 0 0 15px rgba(0, 255, 255, 0.1);
+            margin-bottom: 3rem;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #aaffff, #3a86ff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: -0.5px;
+        }
+        .logo i {
+            color: #0af;
+            margin-right: 6px;
+            background: none;
+            -webkit-background-clip: unset;
+            background-clip: unset;
+            color: #0af;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+        .nav-links a {
+            text-decoration: none;
+            color: #ccf4ff;
+            font-weight: 500;
+            transition: 0.3s;
+            font-size: 1rem;
+            letter-spacing: 0.5px;
+            position: relative;
+        }
+        .nav-links a:hover {
+            color: #0ff;
+            text-shadow: 0 0 6px #0ff;
+        }
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0%;
+            height: 2px;
+            bottom: -6px;
+            left: 0;
+            background: #0ff;
+            transition: 0.3s;
+            box-shadow: 0 0 5px #0ff;
+        }
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Hero 主视觉区 */
+        .hero {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            margin: 2rem 0 4rem;
+        }
+        .badge {
+            background: rgba(0, 255, 255, 0.15);
+            backdrop-filter: blur(4px);
+            padding: 0.4rem 1.2rem;
+            border-radius: 40px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            letter-spacing: 1px;
+            border: 1px solid rgba(0, 255, 255, 0.5);
+            display: inline-block;
+            margin-bottom: 1.5rem;
+            color: #8effff;
+        }
+        .hero h1 {
+            font-size: 4rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #fff, #6ee7ff, #3b82f6);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            margin-bottom: 1.2rem;
+            letter-spacing: -1px;
+        }
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            color: #b9e2ff;
+            margin-bottom: 2rem;
+        }
+        .cta-button {
+            background: linear-gradient(90deg, #0a5c8e, #1e3a8a);
+            border: none;
+            padding: 0.9rem 2.2rem;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 1rem;
+            color: white;
+            cursor: pointer;
+            transition: 0.3s;
+            box-shadow: 0 0 12px rgba(0, 160, 255, 0.5);
+            border: 1px solid rgba(0, 255, 255, 0.5);
+            background-size: 200% auto;
+        }
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 25px rgba(0, 200, 255, 0.7);
+            background-position: right center;
+        }
+
+        /* 科技卡片区域 (网格布局) */
+        .section-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin: 3rem 0 1.5rem;
+            text-align: center;
+            position: relative;
+            display: inline-block;
+            width: 100%;
+        }
+        .section-title span {
+            background: linear-gradient(120deg, #caf0ff, #3a86ff);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+        .tech-card {
+            background: rgba(12, 20, 35, 0.6);
+            backdrop-filter: blur(10px);
+            border-radius: 2rem;
+            padding: 2rem 1.8rem;
+            border: 1px solid rgba(0, 255, 255, 0.2);
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 20px -5px rgba(0,0,0,0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        .tech-card::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(135deg, rgba(0,255,255,0.2), rgba(100,0,255,0.2));
+            border-radius: 2rem;
+            z-index: -1;
+            opacity: 0;
+            transition: 0.4s;
+        }
+        .tech-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(0, 255, 255, 0.7);
+            box-shadow: 0 20px 30px -10px rgba(0, 150, 255, 0.3);
+        }
+        .tech-card:hover::before {
+            opacity: 1;
+        }
+        .card-icon {
+            font-size: 2.5rem;
+            background: linear-gradient(145deg, #0af, #8a2be2);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 1.2rem;
+        }
+        .tech-card h3 {
+            font-size: 1.7rem;
+            font-weight: 600;
+            margin-bottom: 0.8rem;
+        }
+        .tech-card p {
+            color: #bfd9ff;
+            margin-bottom: 1.5rem;
+        }
+        .card-link {
+            color: #0ff;
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: 0.2s;
+        }
+        .card-link:hover {
+            gap: 12px;
+            text-shadow: 0 0 4px #0ff;
+        }
+
+        /* 数据统计 + 动态数字 (科技仪表感) */
+        .stats-section {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            margin: 4rem 0;
+            gap: 2rem;
+            background: rgba(0, 20, 40, 0.4);
+            border-radius: 3rem;
+            padding: 2rem 1rem;
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(0, 255, 255, 0.2);
+        }
+        .stat-item {
+            text-align: center;
+            flex: 1;
+            min-width: 140px;
+        }
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #f0f9ff, #6ee7ff);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            letter-spacing: 2px;
+        }
+        .stat-label {
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 500;
+            color: #9ac7ff;
+        }
+
+        /* 特色科技滚动条 / 交互模块 */
+        .interactive-module {
+            margin: 4rem 0;
+            background: rgba(8, 18, 28, 0.65);
+            backdrop-filter: blur(12px);
+            border-radius: 2rem;
+            padding: 2rem;
+            border: 1px solid rgba(0, 255, 255, 0.3);
+        }
+        .module-title {
+            font-size: 1.7rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .glow-text {
+            color: #0ff;
+            text-shadow: 0 0 6px cyan;
+        }
+        .command-line {
+            background: #010a1a;
+            border-radius: 1rem;
+            padding: 1rem 1.5rem;
+            font-family: 'Space Grotesk', monospace;
+            border-left: 5px solid #0ff;
+            margin: 1.5rem 0;
+            box-shadow: 0 0 15px rgba(0,255,255,0.2);
+        }
+        .command-line p {
+            color: #a0f0ff;
+        }
+        .input-group {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin: 20px 0 10px;
+        }
+        .input-group input {
+            flex: 2;
+            background: rgba(0, 20, 40, 0.9);
+            border: 1px solid #0af;
+            padding: 12px 18px;
+            border-radius: 40px;
+            color: white;
+            font-size: 1rem;
+            outline: none;
+            transition: 0.2s;
+        }
+        .input-group input:focus {
+            border-color: #0ff;
+            box-shadow: 0 0 12px #0ff;
+        }
+        .input-group button {
+            background: linear-gradient(95deg, #0a5c8e, #2c3e9e);
+            border: none;
+            padding: 0 28px;
+            border-radius: 40px;
+            font-weight: bold;
+            color: white;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .input-group button:hover {
+            background: #0af;
+            box-shadow: 0 0 12px #0af;
+            transform: scale(1.02);
+        }
+        #responseMsg {
+            margin-top: 15px;
+            padding: 12px;
+            border-radius: 20px;
+            background: rgba(0, 255, 255, 0.1);
+            font-family: monospace;
+            border: 1px dashed #0ff;
+        }
+
+        /* 底部 */
+        footer {
+            margin-top: 4rem;
+            text-align: center;
+            padding: 2rem;
+            border-top: 1px solid rgba(0, 255, 255, 0.2);
+            color: #7e9bc0;
+        }
+        .social-icons a {
+            color: #7e9bc0;
+            font-size: 1.4rem;
+            margin: 0 12px;
+            transition: 0.2s;
+            display: inline-block;
+        }
+        .social-icons a:hover {
+            color: #0ff;
+            transform: translateY(-4px);
+        }
+
+        /* 响应式 */
+        @media (max-width: 780px) {
+            .hero h1 { font-size: 2.4rem; }
+            .navbar { flex-direction: column; gap: 1rem; }
+            .nav-links { gap: 1.2rem; flex-wrap: wrap; justify-content: center; }
+            .container { padding: 1rem; }
+            .stat-number { font-size: 2rem; }
+        }
+
+        /* 粒子装饰圆环 (科技旋转环) */
+        .orb-ring {
+            position: fixed;
+            bottom: 5%;
+            right: 2%;
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            border: 1px solid rgba(0, 255, 255, 0.2);
+            pointer-events: none;
+            z-index: -1;
+            animation: spin 20s linear infinite;
+        }
+        .orb-ring::after {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            right: 20px;
+            bottom: 20px;
+            border-radius: 50%;
+            border: 1px dashed rgba(0, 255, 255, 0.4);
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+<div class="tech-bg"></div>
+<div class="glow-line">
+    <span></span><span></span><span></span><span></span>
+</div>
+<div class="orb-ring"></div>
+
+<div class="container">
+    <!-- 玻璃导航栏 -->
+    <div class="navbar">
+        <div class="logo">
+            <i class="fas fa-microchip"></i> NEXUS<span style="color:#0ff;">·AI</span>
+        </div>
+        <div class="nav-links">
+            <a href="#">Home</a>
+            <a href="#">Futurism</a>
+            <a href="#">Labs</a>
+            <a href="#">Quantum</a>
+            <a href="#">Contact</a>
+        </div>
+    </div>
+
+    <!-- Hero 区 -->
+    <div class="hero">
+        <div class="badge">
+            <i class="fas fa-bolt"></i>  NEXT-GEN INTERFACE  |  v2.0
+        </div>
+        <h1>超越维度的<br>科技感知</h1>
+        <p>沉浸式数字生态 · 实时数据流 · 未来主义设计系统<br>体验极致的交互美学与智能核心</p>
+        <button class="cta-button" id="exploreBtn"><i class="fas fa-rocket"></i> 启动探索引擎</button>
+    </div>
+
+    <!-- 核心科技卡片 -->
+    <div class="section-title"><span>✦ 尖端技术矩阵 ✦</span></div>
+    <div class="cards-grid">
+        <div class="tech-card">
+            <div class="card-icon"><i class="fas fa-brain"></i></div>
+            <h3>神经语义AI</h3>
+            <p>深度学习驱动的情感计算与自适应逻辑，让交互拥有“意识流”响应，实时反馈环境变化。</p>
+            <a href="#" class="card-link">了解更多 <i class="fas fa-arrow-right"></i></a>
+        </div>
+        <div class="tech-card">
+            <div class="card-icon"><i class="fas fa-chart-line"></i></div>
+            <h3>量子数据流</h3>
+            <p>毫秒级并行计算架构，多维数据分析仪表板，为决策提供未来洞察预测。</p>
+            <a href="#" class="card-link">体验预览 <i class="fas fa-arrow-right"></i></a>
+        </div>
+        <div class="tech-card">
+            <div class="card-icon"><i class="fas fa-vr-cardboard"></i></div>
+            <h3>空间全息界面</h3>
+            <p>无边界扩展现实渲染引擎，打造沉浸式混合空间，重构人机交互边界。</p>
+            <a href="#" class="card-link">探索全息 <i class="fas fa-arrow-right"></i></a>
+        </div>
+    </div>
+
+    <!-- 动态数字区域 (科技仪表) -->
+    <div class="stats-section">
+        <div class="stat-item">
+            <div class="stat-number" id="stat1" data-target="158">0</div>
+            <div class="stat-label">AI 节点</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-number" id="stat2" data-target="24.7">0</div>
+            <div class="stat-label">万亿次/秒 算力</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-number" id="stat3" data-target="99.92">0</div>
+            <div class="stat-label">% 响应精准率</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-number" id="stat4" data-target="380">0</div>
+            <div class="stat-label">+ 专利技术</div>
+        </div>
+    </div>
+
+    <!-- 交互式命令行模块 (科技感满满) -->
+    <div class="interactive-module">
+        <div class="module-title">
+            <i class="fas fa-terminal glow-text"></i> 
+            <span>量子终端 · 即时反馈引擎</span>
+        </div>
+        <div class="command-line">
+            <p><span style="color:#0ff;">$></span>  nexus-cli --interactive --mode=hyperloop</p>
+            <p><span style="color:#0ff;">>></span> 系统就绪 | 等待量子指令注入...</p>
+        </div>
+        <div class="input-group">
+            <input type="text" id="quantumInput" placeholder="输入量子指令... 例如: 科技 / 未来 / 数据流" autocomplete="off">
+            <button id="sendCmd"><i class="fas fa-paper-plane"></i> 执行</button>
+        </div>
+        <div id="responseMsg">
+            <i class="fas fa-sync-alt" style="margin-right: 8px;"></i> 等待交互，体验AI反馈。
+        </div>
+    </div>
+
+    <!-- 另一亮点：悬浮光效板块 -->
+    <div style="display: flex; justify-content: center; gap: 2rem; flex-wrap: wrap; margin-top: 1rem;">
+        <div style="background: rgba(0,0,0,0.3); padding: 0.6rem 1.2rem; border-radius: 40px; border-left: 3px solid cyan;">
+            <i class="fas fa-shield-alt"></i> 端到端加密 · 零信任架构
+        </div>
+        <div style="background: rgba(0,0,0,0.3); padding: 0.6rem 1.2rem; border-radius: 40px; border-left: 3px solid #f0f;">
+            <i class="fas fa-cloud-upload-alt"></i> 边缘云融合 · 无限扩展
+        </div>
+        <div style="background: rgba(0,0,0,0.3); padding: 0.6rem 1.2rem; border-radius: 40px; border-left: 3px solid #ffaa33;">
+            <i class="fas fa-microphone-alt"></i> 多模态感知接口
+        </div>
+    </div>
+
+    <footer>
+        <div class="social-icons">
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-github"></i></a>
+            <a href="#"><i class="fab fa-discord"></i></a>
+            <a href="#"><i class="fas fa-envelope"></i></a>
+        </div>
+        <p style="margin-top: 20px;">© 2025 NEXUS LABS — 预见未来，创造非凡科技体验</p>
+    </footer>
+</div>
+
+<script>
+    // 动态数字滚动效果 (科技感仪表)
+    const statNumbers = [
+        { element: document.getElementById('stat1'), target: 158, current: 0, suffix: '', isFloat: false },
+        { element: document.getElementById('stat2'), target: 24.7, current: 0, suffix: '', isFloat: true, decimal: 1 },
+        { element: document.getElementById('stat3'), target: 99.92, current: 0, suffix: '', isFloat: true, decimal: 2 },
+        { element: document.getElementById('stat4'), target: 380, current: 0, suffix: '', isFloat: false }
+    ];
+
+    function animateStats() {
+        statNumbers.forEach(stat => {
+            const targetVal = stat.target;
+            let start = 0;
+            const duration = 1500;
+            const stepTime = 20;
+            const steps = duration / stepTime;
+            let step = 0;
+            const increment = targetVal / steps;
+            const timer = setInterval(() => {
+                step++;
+                let nextVal;
+                if (stat.isFloat) {
+                    nextVal = (start + increment * step);
+                    if (nextVal >= targetVal) {
+                        nextVal = targetVal;
+                        stat.element.innerText = nextVal.toFixed(stat.decimal);
+                        clearInterval(timer);
+                    } else {
+                        stat.element.innerText = nextVal.toFixed(stat.decimal);
+                    }
+                } else {
+                    nextVal = Math.floor(start + increment * step);
+                    if (nextVal >= targetVal) {
+                        nextVal = targetVal;
+                        stat.element.innerText = nextVal;
+                        clearInterval(timer);
+                    } else {
+                        stat.element.innerText = nextVal;
+                    }
+                }
+            }, stepTime);
+        });
+    }
+
+    // 使用 Intersection Observer 让数字滚动在可视区触发
+    const statsSection = document.querySelector('.stats-section');
+    let animated = false;
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting && !animated) {
+                animated = true;
+                animateStats();
+                observer.unobserve(statsSection);
+            }
+        });
+    }, { threshold: 0.3 });
+    observer.observe(statsSection);
+
+    // 交互式量子终端逻辑 (增加科技体验)
+    const sendBtn = document.getElementById('sendCmd');
+    const quantumInput = document.getElementById('quantumInput');
+    const responseDiv = document.getElementById('responseMsg');
+
+    // 模拟AI智能回应内容库
+    const aiResponses = {
+        '科技': '🌀 解析量子态：当前科技趋势聚焦于神经符号AI与边缘计算，我们正处于范式转移奇点附近。',
+        '未来': '🚀 未来预测：2040年之前，脑机接口和全息社交将成为主流，人类数据交互效率提升300%以上。',
+        '数据流': '📊 实时数据流监控: 全球节点流量 2.3Pb/s，异常波动指数0.003，全链路稳定。',
+        '你好': '✨ 欢迎进入NEXUS核心，我是您的量子助手。请随时指令探索未来科技。',
+        'help': '💡 可尝试指令: 科技 / 未来 / 数据流 / 量子 / 安全',
+        '量子': '⚛️ 量子计算模拟器就绪，当前纠缠比特数64，叠加态仿真进行中...',
+        '安全': '🔒 加密隧道已激活，采用抗量子密码算法，保护你的数字资产完整性。',
+        '默认': '🔮 未知指令，但神经网络已学习。试试“科技”、“未来”、“数据流”或“量子”探索新维度。'
+    };
+
+    function getAIResponse(input) {
+        let lowerInput = input.trim().toLowerCase();
+        if (lowerInput === '') return '👾 请输入量子指令... 尝试输入 “科技” 或 “未来” 感受AI响应。';
+        for (let key in aiResponses) {
+            if (lowerInput.includes(key)) {
+                return aiResponses[key];
+            }
+        }
+        // 智能模糊
+        if (lowerInput.length > 2) {
+            return `🤖 分析“${input}”中... 该语义不在核心库，但已将请求发送至边缘AI集群。反馈：未来科技总是从探索未知开始。`;
+        }
+        return aiResponses['默认'];
+    }
+
+    sendBtn.addEventListener('click', () => {
+        const userCmd = quantumInput.value;
+        if (!userCmd) {
+            responseDiv.innerHTML = `<i class="fas fa-exclamation-triangle" style="margin-right:8px; color:#ffaa44;"></i> 请输入指令，启动终端序列。`;
+            return;
+        }
+        responseDiv.innerHTML = `<i class="fas fa-cogs fa-spin" style="margin-right:8px;"></i> 正在处理量子指令 "${userCmd}" ...`;
+        setTimeout(() => {
+            const reply = getAIResponse(userCmd);
+            responseDiv.innerHTML = `<i class="fas fa-robot" style="margin-right:8px; color:#0ff;"></i> ${reply}`;
+            quantumInput.value = '';
+        }, 400);
+    });
+    quantumInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            sendBtn.click();
+        }
+    });
+
+    // 探索引擎按钮触发酷炫提示
+    const exploreBtn = document.getElementById('exploreBtn');
+    exploreBtn.addEventListener('click', () => {
+        responseDiv.innerHTML = `<i class="fas fa-rocket" style="margin-right:8px;"></i> 启动超空间引擎，扫描全息数据... 欢迎来到未来科技矩阵。`;
+        // 添加一个临时的光效闪烁
+        document.body.style.transition = '0.2s';
+        document.body.style.boxShadow = 'inset 0 0 30px rgba(0,255,255,0.4)';
+        setTimeout(() => {
+            document.body.style.boxShadow = '';
+        }, 400);
+        // 滚动到交互模块增加沉浸感
+        document.querySelector('.interactive-module').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    });
+
+    // 简单的鼠标粒子跟随效果可选 (增加科技华丽度)
+    // 但为保持性能，不加太多，直接加一个小光晕移动效果
+    document.addEventListener('mousemove', (e) => {
+        let glow = document.querySelector('.orb-ring');
+        if(glow) {
+            let x = e.clientX;
+            let y = e.clientY;
+            // 让环微微跟随鼠标 但保留固定位置感更佳, 可选微动
+            // 为了不影响太多，只做极细微移动
+            // 不做太大偏移，免得眩晕
+        }
+    });
+    // 页面初始化后手动设置一下统计数字的占位
+    statNumbers.forEach(s => { s.element.innerText = s.isFloat ? '0.0' : '0'; });
+    // 若 statsSection 已经可见立即触发
+    if (window.IntersectionObserver) {
+        // 已在上方观察
+    } else {
+        setTimeout(() => animateStats(), 500);
+    }
+</script>
+</body>
+</html>
